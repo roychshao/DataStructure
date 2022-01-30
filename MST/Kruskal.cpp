@@ -1,36 +1,47 @@
+/*
+ * the input data should be written in another file(.txt) and command ./Kruskal < input.txt
+ * Author : royshao
+ * Date : 2022/1/31
+ */
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
 using namespace std;
 int n, m;
 
+/* node structure definition */
 struct Node {
     int ID;
     Node* left;
     Node* right;
 };
-vector<Node*> nodelist;
+vector<Node*> nodelist; // list to store the root that contains the node
 
+/* edge structure definition */
 struct Edge {
     int start;
     int end;
     int cost;
 };
 
+/* compare function */
 bool cmp(Edge a, Edge b) {
     return (a.cost > b.cost);
 }
 
+/* recursive function to update the root in nodelist */
 void updateRoot(Node *oldroot, Node *newroot) {
     if (oldroot == NULL)
         return;
-    nodelist[oldroot->ID-1] = newroot;
+    nodelist[oldroot->ID] = newroot;
     if (oldroot->left != NULL)
         updateRoot(oldroot->left, newroot);
     if (oldroot->right != NULL)
         updateRoot(oldroot->right, newroot);
 }
 
+/* recursive function to insert a root to another root */
 void insert(Node *root, Node *leaf) {
     if (root == NULL)
         return;
@@ -44,11 +55,13 @@ void insert(Node *root, Node *leaf) {
         root->right = leaf;
 }
 
+/* Kruskal's algorithm */
 void Kruskal(vector<Edge> edgelist) {
     int totalcost = 0;
-    for (int i = 0; i < n; ++i) {
+    nodelist.push_back(NULL);
+    for (int i = 1; i <= n; ++i) {
         Node *newnode = new Node;
-        newnode->ID = i+1;
+        newnode->ID = i;
         newnode->left = NULL;
         newnode->right = NULL;
         nodelist.push_back(newnode);
@@ -56,9 +69,9 @@ void Kruskal(vector<Edge> edgelist) {
     while (!edgelist.empty()) {
         Edge e = edgelist.back();
         edgelist.pop_back();
-        if (nodelist[e.start-1]->ID != nodelist[e.end-1]->ID) {
-            insert(nodelist[e.start - 1], nodelist[e.end - 1]);
-            updateRoot(nodelist[e.end-1], nodelist[e.start-1]);
+        if (nodelist[e.start]->ID != nodelist[e.end]->ID) {
+            insert(nodelist[e.start], nodelist[e.end]);
+            updateRoot(nodelist[e.end], nodelist[e.start]);
             totalcost += e.cost;
             cout << e.start << " to " << e.end << " (cost " << e.cost << ")" << endl;
         }
@@ -66,14 +79,12 @@ void Kruskal(vector<Edge> edgelist) {
     cout << "Minimum total cost is : " << totalcost << endl;
 }
 
+/* main function */
 int main() {
     vector<Edge> edgelist;
     int s, e, c;
-    cout << "Enter how many nodes are included : ";
     cin >> n;
-    cout << "Enter how many connections are included : ";
     cin >> m;
-    cout << "Enter each connection's information(start end cost), nodes represent by order : ";
     for (int i = 0; i < m; ++i) {
         cin >> s >> e >> c;
         Edge newroad;
@@ -84,4 +95,5 @@ int main() {
     }
     sort(edgelist.begin(), edgelist.end(), cmp);
     Kruskal(edgelist);
+    return 0;
 }
