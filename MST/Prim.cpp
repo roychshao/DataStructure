@@ -1,5 +1,5 @@
 /*
-* the input data should be written in another file(.txt) and command ./Kruskal < input.txt
+* the input data should be written in another file(.txt) and command ./Prim < input.txt
 * Author : royshao
 * Date : 2022/2/2
 */
