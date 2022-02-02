@@ -5,6 +5,7 @@
 using namespace std;
 int totalcost = 0;
 
+// determine if all nodes are visited
 bool allVisited(vector<bool> visited){
     for(auto it = visited.begin(); it != visited.end(); ++it){
         if(*it == false)
@@ -13,6 +14,7 @@ bool allVisited(vector<bool> visited){
     return true;
 }
 
+// extractmin function
 int extractMin(vector<int> &disToTree, vector<bool> &visited, int n){
     int min = IFN, minidx = 0;
     for(int i = 0; i < n; ++i){
@@ -25,11 +27,13 @@ int extractMin(vector<int> &disToTree, vector<bool> &visited, int n){
     return minidx;
 }
 
+// decrease key function
 void decreaseKey(int **graph, int idx, vector<int> &disToTree, int n){
     for(int i = 0; i < n; ++i)
         disToTree[i] = (graph[idx][i] < disToTree[i]) ? graph[idx][i] : disToTree[i];
 }
 
+// Prim's Algorithm
 void Prim(int **graph, int n){
     vector<bool> visited(n, false);
     vector<int> disToTree(n, IFN);
