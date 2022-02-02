@@ -1,12 +1,10 @@
 Implementation of minimum spanning tree  
-
+---
 input format :  
 
 Suppose there are n nodes and m connections  
 
 and each connection is expressed with the format : start, end, cost   
-
----   
 
 Input:  
 
