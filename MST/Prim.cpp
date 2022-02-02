@@ -1,3 +1,9 @@
+/*
+* the input data should be written in another file(.txt) and command ./Kruskal < input.txt
+* Author : royshao
+* Date : 2022/1/31
+*/
+
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -5,11 +11,7 @@
 using namespace std;
 int totalcost = 0;
 
-<<<<<<< HEAD
-// determine if all nodes are visited
-=======
 // determine if all the nodes are visited
->>>>>>> 87574c8025a2d11837ad555eefdb4ff64851512b
 bool allVisited(vector<bool> visited){
     for(auto it = visited.begin(); it != visited.end(); ++it){
         if(*it == false)
@@ -18,11 +20,7 @@ bool allVisited(vector<bool> visited){
     return true;
 }
 
-<<<<<<< HEAD
-// extractmin function
-=======
 // extract min function
->>>>>>> 87574c8025a2d11837ad555eefdb4ff64851512b
 int extractMin(vector<int> &disToTree, vector<bool> &visited, int n){
     int min = IFN, minidx = 0;
     for(int i = 0; i < n; ++i){
@@ -41,11 +39,7 @@ void decreaseKey(int **graph, int idx, vector<int> &disToTree, int n){
         disToTree[i] = (graph[idx][i] < disToTree[i]) ? graph[idx][i] : disToTree[i];
 }
 
-<<<<<<< HEAD
-// Prim's Algorithm
-=======
 // Prim's algorithm
->>>>>>> 87574c8025a2d11837ad555eefdb4ff64851512b
 void Prim(int **graph, int n){
     vector<bool> visited(n, false);
     vector<int> disToTree(n, IFN);
