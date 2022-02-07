@@ -76,7 +76,7 @@ int main(){
     for(int i = 0; i < m; ++i){
         int start = 0, end = 0, cost = 0;
         cin >> start >> end >> cost;
-        while(start == 0 || end == 0){
+        while(!start || !end){
             cout << "error : the node's order should start from 1." << endl;
             cin >> start >> end >> cost;
         }
