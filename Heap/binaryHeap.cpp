@@ -1,7 +1,7 @@
 /*
  *  It is a min heap use binary heap
  *  Author : royshao
- *  Date : 2022/2/8
+ *  Date : 2022/2/9
  */
 
 #include <iostream>
@@ -9,6 +9,7 @@
 #include <algorithm>
 using namespace std;
 
+// class Minheap definition
 class Minheap {
 public:
     Minheap();
@@ -18,11 +19,13 @@ public:
     void heapify(int node);
     int getArrSize() { return arr.size(); };
 private:
+    // use a vector to store datas
     vector<int> arr;
 };
 
 Minheap::Minheap() {
     arr.clear();
+    // to make the index begin with 1, fill arr[0]
     arr.push_back(-1);
 }
 
@@ -39,19 +42,29 @@ Minheap::extract() {
     return min;
 }
 
+// recursive function from the head's left child of the array
+// to heapify the array
 void
 Minheap::heapify(int node) {
-    if (node == 1)
+    if (node > arr.size()-1)
         return;
     if (arr[node] < arr[node / 2])
         swap(arr[node], arr[node / 2]);
-    heapify(node - 1);
+    heapify(node + 1);
 }
 
+// display the result currently
 void
 Minheap::display() {
-    for (auto it = arr.begin() + 1; it != arr.end(); ++it)
+    int counter = 1, cnt_record = 2;
+    for (auto it = arr.begin() + 1; it != arr.end(); ++it){
         cout << *it << " ";
+        if(counter == cnt_record -1){
+            cout << "| ";
+            cnt_record *= 2;
+        }
+        counter++;
+    }
     cout << endl;
 }
 
@@ -59,6 +72,7 @@ int main() {
     Minheap mh;
     int option = 0;
     int newnode, root;
+    // construct the console
     while (true) {
         cout << "Enter '1' for insert a node" << endl
             << "Enter '2' for extract root" << endl
@@ -69,6 +83,7 @@ int main() {
             mh.display();
             break;
         }
+        // option switch case
         switch (option) {
         case 1:
             cout << "Enter the value of the node => ";
@@ -86,7 +101,7 @@ int main() {
             cout << "command not known" << endl;
             break;
         }
-        mh.heapify(mh.getArrSize()-1);
+        mh.heapify(2);
     }
     cout << "program terminated." << endl;
     return 0;
