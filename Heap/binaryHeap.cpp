@@ -79,7 +79,7 @@ int main() {
         cout << "Enter '1' for insert a node" << endl
             << "Enter '2' for extract root" << endl
             << "Enter '3' for display the tree" << endl
-            << "Enter '4' for exist the program while print the tree" << endl << "=> ";
+            << "Enter '4' for exit the program and print the tree" << endl << "=> ";
         cin >> option;
         if (option == 4) {
             mh.display();

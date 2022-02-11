@@ -143,11 +143,11 @@ Binomialheap::display(vector<node*> arr, int flag) {
             cout << endl;
     }
     // flag determine if the recursive function is at its first time
-    if (flag) {
+    /*if (flag) {
         for (int i = 1; i < status.size(); ++i)
             cout << status[i] << " ";
         cout << endl;
-    }
+    }*/
 }
 
 // main function
@@ -160,7 +160,7 @@ int main() {
         cout << "Enter '1' for insert a node" << endl
             << "Enter '2' for extract root" << endl
             << "Enter '3' for display the tree" << endl
-            << "Enter '4' for exist the program while print the tree" << endl << "=> ";
+            << "Enter '4' for exit the program and print the tree" << endl << "=> ";
         cin >> option;
         if (option == 4) {
             bh.display(bh.getArr(), 1);
