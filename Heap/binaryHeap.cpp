@@ -9,6 +9,8 @@
 #include <algorithm>
 using namespace std;
 
+int nodenum = 0;
+
 // class Minheap definition
 class Minheap {
 public:
@@ -89,9 +91,15 @@ int main() {
             cout << "Enter the value of the node => ";
             cin >> newnode;
             mh.insert(newnode);
+            nodenum++;
             break;
         case 2:
+            if(!nodenum){
+                cout << "Attempt to extract a node from an empty heap." << endl;
+                break;
+            }
             root = mh.extract();
+            nodenum--;
             cout << "Min value in the heap is : " << root << endl;
             break;
         case 3:
