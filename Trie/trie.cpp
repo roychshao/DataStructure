@@ -1,3 +1,11 @@
+/*
+ * Implementation of trie, support only for a single word,
+ * if the input include ' ', the program will collapse.
+ * Author: Roy Shao
+ * Date: 2022/2/18
+ */
+
+
 #include <iostream>
 #include <vector>
 #include <cstring>
@@ -5,9 +13,10 @@
 #define MAX_WORD_LEN 10000
 using namespace std;
 
-
+//class node definition
 class node{
 public:
+    // constructors
     node(){
         word = ' ';
         leaf = false;
@@ -18,6 +27,8 @@ public:
         leaf = false;
         nexts.clear();
     };
+
+    // append a character to the back of current charactor
     node* append(char c){
         node* place = find(c);
         if(place == NULL){
@@ -28,6 +39,8 @@ public:
         else
             return place;
     };
+
+    // check if the there exist the charactor in the nexts
     node* find(char c){
         for(auto it:nexts){
             if(it->word == c)
@@ -40,6 +53,8 @@ public:
     vector<node*> nexts;
 };
 
+
+// class Trie definition
 class Trie{
 public:
     Trie();
@@ -49,6 +64,7 @@ public:
     void display(node*);
     node* getRoot() { return root; };
 private:
+    // the virtual root
     node *root;
 };
 
@@ -56,6 +72,7 @@ Trie::Trie(){
     root = new node();
 }
 
+// insert function
 void
 Trie::insert(char* word){
     node* current = root;
@@ -64,22 +81,24 @@ Trie::insert(char* word){
         pre = current;
         current = current->append(word[i]);
     }
-    pre->leaf = true;
+    current->leaf = true;
 }
 
+// remove function
 void
 Trie::remove(char* word){
     vector<node*> pre;
     node* current = root;
+    // first find the leaf of the word
     for(int i=0; i<strlen(word); ++i){
         node* tmp = current->find(word[i]);
-        void* v = tmp;
         current = tmp;
     }
+    // from the leaf, remove nodes upward if able
     current->leaf = false;
     for(int i=(pre.size()-1); i>=0; --i){
         node* tmp = pre[i];
-        if(tmp->nexts.size() == 0){
+        if(tmp->nexts.size() == 0 && tmp->leaf != true){
             pre.pop_back();
         }
         else
@@ -87,6 +106,7 @@ Trie::remove(char* word){
     }
 }
 
+// search function
 bool
 Trie::search(char* word){
     node* current = root;
@@ -100,13 +120,14 @@ Trie::search(char* word){
     return true;
 }
 
+// vector to store a word at a time
 vector<char> dic;
+// display function
 void
 Trie::display(node* node){
     if(!node)
         return;
-    if(node->leaf){
-        dic.push_back(node->word);
+    if(node->leaf == true){
         for(int i=0; i<dic.size(); ++i)
             cout << dic[i];
         cout << endl;
@@ -118,6 +139,7 @@ Trie::display(node* node){
     }
 }
 
+// main function
 int main(){
     int option;
     char* word = new char [MAX_WORD_LEN];
@@ -131,7 +153,9 @@ int main(){
         cin >> option;
         if (option == 5) {
             dic.clear();
+            cout << endl << "---------------" << endl;
             tr.display(tr.getRoot());
+            cout << "---------------" << endl;
             break;
         }
         // option switch case
@@ -156,13 +180,15 @@ int main(){
             cout << "Enter the word => ";
             cin >> word;
             if(tr.search(word))
-                cout << word << "Exist." << endl;
+                cout << '"' << word << '"' << " exist." << endl;
             else
-                cout << word << "Isn't existent." << endl;
+                cout << '"' << word << '"' << " isn't existent." << endl;
             break;
         case 4:
             dic.clear();
+            cout << endl << "---------------" << endl;
             tr.display(tr.getRoot());
+            cout << "---------------" << endl;
             break;
         default:
             cout << "Command not known" << endl;
