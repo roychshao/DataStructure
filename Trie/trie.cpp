@@ -5,7 +5,7 @@
  * Date: 2022/2/18
  */
 
-
+#include <fstream>
 #include <iostream>
 #include <vector>
 #include <cstring>
@@ -21,11 +21,13 @@ public:
         word = ' ';
         leaf = false;
         nexts.clear();
+        nexts.resize(95, NULL);
     };
     node(char c){
         word = c;
         leaf = false;
         nexts.clear();
+        nexts.resize(95, NULL);
     };
 
     // append a character to the back of current charactor
@@ -33,7 +35,7 @@ public:
         node* place = find(c);
         if(place == NULL){
             node* newnode = new node(c);
-            this->nexts.push_back(newnode);
+            this->nexts[int(c - ' ')] = newnode;
             return newnode;
         }
         else
@@ -42,11 +44,7 @@ public:
 
     // check if the there exist the charactor in the nexts
     node* find(char c){
-        for(auto it:nexts){
-            if(it->word == c)
-                return it;
-        }
-        return NULL;
+        return nexts[int(c - ' ')];
     };
     char word;
     bool leaf;
@@ -133,9 +131,11 @@ Trie::display(node* node){
         cout << endl;
     }
     for(auto it:node->nexts){
-        dic.push_back(it->word);
-        display(it);
-        dic.pop_back();
+        if(it != NULL){
+            dic.push_back(it->word);
+            display(it);
+            dic.pop_back();
+        }
     }
 }
 
