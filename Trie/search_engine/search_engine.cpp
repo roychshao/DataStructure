@@ -1,13 +1,14 @@
 /*
  * Search engine for the whole data in the /data 
  * Author: Roy Shao
- * Date: 2022/2/19
+ * Date: 2022/2/20
  */
 
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <ctime>
 #include <algorithm>
 #include <string>
 #define MAX_WORD_LEN 10000
@@ -167,6 +168,9 @@ int main(){
             cout << "program terminated." << endl;
             return 0;
         }
+
+        clock_t start = clock(), end;
+
         cout << endl;
         cout << "--------------------" << endl;
         for(int i = 0; i < 100; ++i){
@@ -177,6 +181,9 @@ int main(){
         }
         if(!find)
             cout << "Not found in any file." << endl;
+        end = clock();
+        double duration = double(end)/CLOCKS_PER_SEC - double(start)/CLOCKS_PER_SEC;
+        cout << "(Searching time : " << duration << ")" << endl;
         cout << "--------------------" << endl << endl;
     }
     return 0;
