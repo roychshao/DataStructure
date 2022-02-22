@@ -1,7 +1,9 @@
 /*
  * Search engine for the whole data in the /data 
+ * support for only a +b, a -b and a OR b, these three kind grammers
+ *
  * Author: Roy Shao
- * Date: 2022/2/20
+ * Date: 2022/2/22
  */
 
 #include <fstream>
@@ -141,7 +143,11 @@ Trie::display(node* node){
 }
 
 // main function
-int main(){
+int main(int argc, char** argv){
+    if(argc == 1){
+        cout << "Please add the word to search for in the command line." << endl;
+        return 0;
+    }
     int option;
     char* word = new char [MAX_WORD_LEN];
     vector<Trie> trs(100);
@@ -153,38 +159,55 @@ int main(){
         if(!ifs.is_open())
             cout << "Failed to open the file : " << filename << endl;
         else{
+            int counter = 0;
             while(ifs >> word){
                 trs[i].insert(word);
+                counter++;
             }
         }
     }
     // console interface and search for the word
-    while(true){
-        bool find = false;
-        cout << "Please enter the word to search for" << endl
-            << "(!q or !quit for exit)" << endl << "=>";
-        cin >> word;
-        if(strcmp(word, "!q") == 0 || strcmp(word, "!quit") == 0){
-            cout << "program terminated." << endl;
-            return 0;
-        }
+    bool find = false;
 
-        clock_t start = clock(), end;
+    clock_t start = clock(), end;
 
-        cout << endl;
-        cout << "--------------------" << endl;
-        for(int i = 0; i < 100; ++i){
-            if(trs[i].search(word)){
+    cout << endl;
+    cout << "-----------------" << endl;
+    for(int i = 0; i < 100; ++i){
+        if(argc == 2){
+            if(trs[i].search(argv[1])){
                 find = true;
                 cout << "find in \"" << i << ".txt\"" << endl;
-           } 
+            }
+        }else if(argc == 3){
+            char* word2 = new char [strlen(argv[2])-1];
+            for(int i=0; i<strlen(argv[2])-1; ++i)
+                word2[i] = argv[2][i+1];
+            if(argv[2][0] == '+'){
+                if(trs[i].search(argv[1]) && trs[i].search(word2)){
+                    find = true;
+                    cout << "find in \"" << i << ".txt\"" << endl;
+                }
+            }
+            else if(argv[2][0] == '-'){
+                if(trs[i].search(argv[1]) && !trs[i].search(word2)){
+                    find = true;
+                    cout << "find in \"" << i << ".txt\"" << endl;
+                }
+            }
+        }else if(argc == 4){
+        // currently only support for "OR"
+            if(trs[i].search(argv[1]) || trs[i].search(argv[3])){
+                find = true;
+                cout << "find in \"" << i << ".txt\"" << endl;
+            }
         }
-        if(!find)
-            cout << "Not found in any file." << endl;
-        end = clock();
-        double duration = double(end)/CLOCKS_PER_SEC - double(start)/CLOCKS_PER_SEC;
-        cout << "(Searching time : " << duration << ")" << endl;
-        cout << "--------------------" << endl << endl;
     }
+    if(!find)
+        cout << "Not found in any file." << endl;
+    end = clock();
+    double duration = double(end)/CLOCKS_PER_SEC - double(start)/CLOCKS_PER_SEC;
+    cout << "-----------------" << endl;
+    cout << "(Searching time : " << duration << ")" << endl << endl;
     return 0;
 }
